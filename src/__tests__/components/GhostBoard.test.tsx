@@ -21,6 +21,13 @@ describe("GhostBoard", () => {
     buttons.forEach((btn) => expect(btn).toHaveTextContent("❓"));
   });
 
+  it("shows game over if clicks empty button", async () => {
+    render(<GhostBoard />);
+    const emptyButton = screen.getAllByText("❓")[0];
+    userEvent.click(emptyButton);
+    expect(window.alert).toHaveBeenCalledWith("Not a ghost! Game over");
+  });
+
   it("increments +1 score when ghost is busted", async () => {
     render(<GhostBoard />);
     jest.advanceTimersByTime(1500);
@@ -32,12 +39,5 @@ describe("GhostBoard", () => {
     const ghostButton2 = await screen.findByText("👻");
     userEvent.click(ghostButton2);
     expect(screen.getByText("Ghosts busted: 2")).toBeInTheDocument();
-  });
-
-  it("shows game over if clicks empty button", async () => {
-    render(<GhostBoard />);
-    const emptyButton = screen.getAllByText("❓")[0];
-    userEvent.click(emptyButton);
-    expect(window.alert).toHaveBeenCalledWith("Not a ghost! Game over");
   });
 });
